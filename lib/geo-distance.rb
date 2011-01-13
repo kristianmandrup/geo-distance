@@ -1,7 +1,3 @@
-require 'geo-distance/haversine'
-require 'geo-distance/spherical'
-require 'geo-distance/vincenty'
-
 module GeoDistance
 
   RAD_PER_DEG = 0.017453293  #  PI/180
@@ -140,3 +136,7 @@ module GeoDistance
     unit_opts == unit || unit_opts[unit]    
   end
 end
+
+require 'geo-distance/haversine'
+require 'geo-distance/spherical'
+require 'geo-distance/vincenty'

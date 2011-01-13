@@ -22,10 +22,10 @@ end
 require 'geo-distance'
 
 class Integer
-  GeoDistance.units.each do |unit|
+  ::GeoDistance.units.each do |unit|
     class_eval %{
-      def #{unit} number
-        GeoDistance::Distance.new(number, :#{unit})
+      def #{unit}
+        GeoDistance::Distance.new(self, :#{unit})
       end
     }
   end
