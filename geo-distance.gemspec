@@ -26,6 +26,7 @@ This is done using Math formulas without resorting to Active Record or SQL DB fu
     "README.textile",
     "Rakefile",
     "VERSION",
+    "geo-distance.gemspec",
     "lib/geo-distance.rb",
     "lib/geo-distance/core_ext.rb",
     "lib/geo-distance/formula.rb",
