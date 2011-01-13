@@ -17,15 +17,11 @@ module GeoDistance
       from_latitude   = lat1.to_radians
       to_longitude    = lon2.to_radians
       to_latitude     = lat2.to_radians
-
-      puts "radius: #{EARTH_MAJOR_AXIS_RADIUS}"
     
       earth_major_axis_radius = EARTH_MAJOR_AXIS_RADIUS[:kilometers]
       earth_minor_axis_radius = EARTH_MINOR_AXIS_RADIUS[:kilometers]
 
       f = (earth_major_axis_radius - earth_minor_axis_radius) / earth_major_axis_radius
-
-      puts "f: #{f}"
 
       l = to_longitude - from_longitude
       u1 = atan((1-f) * tan(from_latitude))
