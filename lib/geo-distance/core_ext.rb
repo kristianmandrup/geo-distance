@@ -17,4 +17,17 @@ class Float
     self * RAD_PER_DEG    
   end  
   alias_method :to_radians, :rpd
+end             
+
+require 'geo-distance'
+
+class Integer
+  GeoDistance.units.each do |unit|
+    class_eval %{
+      def #{unit} number
+        GeoDistance::Distance.new(number, :#{unit})
+      end
+    }
+  end
 end
+

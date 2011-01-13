@@ -45,10 +45,14 @@ module GeoDistance
   end
     
   class Distance
-    attr_reader :distance
+    attr_reader :distance, :unit
 
-    def initialize distance
+    def initialize distance, unit = nil
       @distance = distance
+      return if !unit
+
+      raise ArgumentError, "Invalid unit: #{unit} - must be one of #{GeoDistance.units}" if !GeoDistance.units.include?(unit.to_sym)
+      @unit = unit.to_sym
     end
     
     def [] key               
