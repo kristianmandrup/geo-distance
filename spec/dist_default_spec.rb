@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "GeoDistance::Vincenty" do
+describe "GeoDistance default" do
   it "should work" do
     lon1 = -104.88544
     lat1 = 39.06546
@@ -8,7 +8,9 @@ describe "GeoDistance::Vincenty" do
     lon2 = -104.80
     lat2 = lat1
 
-    dist = GeoDistance::Vincenty.distance( lat1, lon1, lat2, lon2 )
+    GeoDistance.default_algorithm = :haversine
+
+    dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )
 
     puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist[:meters].number} meters"
 
@@ -16,6 +18,6 @@ describe "GeoDistance::Vincenty" do
     puts "#{dist.meters}"
     puts "#{dist[:km]}"
     puts "#{dist[:miles]}"
-    dist[:km].to_s.should match(/7\.38*/)
+    dist[:km].to_s.should match(/7\.376*/)
   end
 end

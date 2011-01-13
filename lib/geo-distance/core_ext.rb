@@ -16,4 +16,5 @@ class Float
   def rpd
     self * RAD_PER_DEG    
   end  
+  alias_method :to_radians, :rpd
 end

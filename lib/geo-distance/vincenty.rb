@@ -12,16 +12,20 @@ module GeoDistance
     #   )
     #   #=> 101.070118000159
     #
-    def self.distance(from, to, units = :miles)
-      from_longitude  = from.longitude.to_radians
-      from_latitude   = from.latitude.to_radians
-      to_longitude    = to.longitude.to_radians
-      to_latitude     = to.latitude.to_radians
+    def self.distance(lat1, lon1, lat2, lon2)
+      from_longitude  = lon1.to_radians
+      from_latitude   = lat1.to_radians
+      to_longitude    = lon2.to_radians
+      to_latitude     = lat2.to_radians
+
+      puts "radius: #{EARTH_MAJOR_AXIS_RADIUS}"
     
-      earth_major_axis_radius = EARTH_MAJOR_AXIS_RADIUS[units.to_sym]
-      earth_minor_axis_radius = EARTH_MINOR_AXIS_RADIUS[units.to_sym]
+      earth_major_axis_radius = EARTH_MAJOR_AXIS_RADIUS[:kilometers]
+      earth_minor_axis_radius = EARTH_MINOR_AXIS_RADIUS[:kilometers]
 
       f = (earth_major_axis_radius - earth_minor_axis_radius) / earth_major_axis_radius
+
+      puts "f: #{f}"
 
       l = to_longitude - from_longitude
       u1 = atan((1-f) * tan(from_latitude))
@@ -63,8 +67,17 @@ module GeoDistance
      delta_sigma = b*sin_sigma*(cos2SigmaM+b/4*(cos_sigma*(-1+2*cos2SigmaM*cos2SigmaM)-
        b/6*cos2SigmaM*(-3+4*sin_sigma*sin_sigma)*(-3+4*cos2SigmaM*cos2SigmaM)))
      
-      earth_minor_axis_radius * a * (sigma-delta_sigma)
+      c = earth_minor_axis_radius * a * (sigma-delta_sigma)
+
+      GeoDistance::Distance.new(c / unkilometer)
     end
+
+    private
+    
+    def self.unkilometer    
+      6378.135
+    end
+      
 
   end
 end
