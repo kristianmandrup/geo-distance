@@ -1,15 +1,15 @@
 h1. GeoDistance - geo distance calculations
 
 Calculates the Geo distance between two locations using longitude and latitude. 
-This is done using pure Math formulas without resorting to Active Record or SQL DB functionality
+This is done using "pure" Math formulas without resorting to Active Record or SQL DB functionality
 
-This is meant to ba a replacement for all those geocode and geolocation utils out there that use built in SQL DB functionality for their calculations!
+This gem is meant to be a replacement for those geo distance utils out there that use built in SQL DB functionality for their calculations!
 
-h2. Status
+The formulas curently supported are
 
-*Curently a work in progress*
-
-I have extracted parts from Graticule so far. Need to be aligned with the API used by by haversine gem ;)
+* _Haversine_
+* _Spherical_
+* _Vincenty_
 
 h2. Install & Usage
 
@@ -34,14 +34,22 @@ it "should work" do
 end  
 </pre>
 
-Note: GeoDistance will be is used in the "geo_magic":https://github.com/kristianmandrup/geo_magic gem
+h3. Setting default algorithm
+
+You can also set a default algorithm to use...
+The following will use the _Haversine_ algorithm:
+
+<pre>
+  GeoDistance.default_algorithm = :haversine
+  dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
+</pre>
+
+GeoDistance is used in the "geo_magic":https://github.com/kristianmandrup/geo_magic gem
 
 h2. Contributing to geo-distance
-
-See the specs!
  
+* Check out the specs and add specs to spec any added features or changes!
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
