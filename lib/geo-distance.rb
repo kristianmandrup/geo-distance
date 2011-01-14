@@ -82,7 +82,7 @@ module GeoDistance
     GeoDistance.units.each do |unit|
       class_eval %{
         def delta_#{unit}
-          earth_radius[:#{unit}] * distance
+          GeoDistance.earth_radius[:#{unit}] * distance
         end
       }
     end
