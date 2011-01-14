@@ -1,15 +1,26 @@
-module GeoDistance
-
-  RAD_PER_DEG = 0.017453293  #  PI/180
- 
+module GeoDistance 
   # this is global because if computing lots of track point distances, it didn't make 
   # sense to new a Hash each time over potentially 100's of thousands of points
 
-  class << self                
+  class << self
+    # radius of the great circle in miles
+    # radius in kilometers...some algorithms use 6367
+    def earth_radius
+      {:km => 6371, :miles => 3956, :feet => 20895592, :meters => 6371000}                     
+    end
+
+    def radians_per_degree
+      0.017453293  #  PI/180
+    end    
+    
     def units 
       [:miles, :km, :feet, :meters]
-    end 
-
+    end
+    
+    def radians_ratio unit
+      GeoDistance.radians_per_degree * earth_radius[unit]          
+    end
+    
     def default_algorithm= name
       raise ArgumentError, "Not a valid algorithm. Must be one of: #{algorithms}" if !algorithms.include?(name.to_sym)
       @default_algorithm = name 
@@ -66,32 +77,15 @@ module GeoDistance
     end
 
     protected
-
-    # the great circle distance d will be in whatever units R is in
-
-    Rmiles = 3956           # radius of the great circle in miles
-    Rkm = 6371              # radius in kilometers...some algorithms use 6367
-    Rfeet = Rmiles * 5282   # radius in feet
-    Rmeters = Rkm * 1000    # radius in meters
     
     # delta between the two points in miles
-    def delta_miles 
-      Rmiles * distance
+    GeoDistance.units.each do |unit|
+      class_eval %{
+        def delta_#{unit}
+          earth_radius[:#{unit}] * distance
+        end
+      }
     end
-    
-    # delta in kilometers
-    def delta_km
-      Rkm * distance
-    end
-    
-    def delta_feet
-      Rfeet * distance
-    end
-    
-    def delta_meters
-      Rmeters * distance
-    end                  
-
 
     class << self            
       GeoDistance.units.each do |unit|
