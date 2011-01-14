@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{geo-distance}
-  s.version = "0.1.0"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2011-01-13}
+  s.date = %q{2011-01-14}
   s.description = %q{Calculates the geo distance between two locations using longitude and latitude using Haversine, Speherical or Vincenty formula. 
 This is done using Math formulas without resorting to Active Record or SQL DB functionality}
   s.email = %q{kmandrup@gmail.com}
@@ -33,6 +33,7 @@ This is done using Math formulas without resorting to Active Record or SQL DB fu
     "lib/geo-distance/haversine.rb",
     "lib/geo-distance/spherical.rb",
     "lib/geo-distance/vincenty.rb",
+    "spec/core_ext_spec.rb",
     "spec/dist_default_spec.rb",
     "spec/dist_haversine_spec.rb",
     "spec/dist_spherical_spec.rb",
@@ -45,6 +46,7 @@ This is done using Math formulas without resorting to Active Record or SQL DB fu
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Calculates the geo distance between two locations using longitude and latitude, using Haversine, Speherical or Vincenty formula}
   s.test_files = [
+    "spec/core_ext_spec.rb",
     "spec/dist_default_spec.rb",
     "spec/dist_haversine_spec.rb",
     "spec/dist_spherical_spec.rb",
