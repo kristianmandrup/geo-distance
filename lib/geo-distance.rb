@@ -50,87 +50,13 @@ module GeoDistance
       [:haversine, :spherical, :vincenty]
     end
   end
-    
-  class Distance
-    attr_reader :distance, :unit
-
-    def initialize distance, unit = nil
-      @distance = distance
-      return if !unit
-
-      raise ArgumentError, "Invalid unit: #{unit} - must be one of #{GeoDistance.units}" if !GeoDistance.units.include?(unit.to_sym)
-      @unit = unit.to_sym
-    end
-    
-    def [] key               
-      method = :"delta_#{key}"
-      raise ArgumentError, "Invalid unit key #{key}" if !respond_to? method
-      Distance.send "in_#{key}", send(method)
-    end
-
-    GeoDistance.units.each do |unit|
-      class_eval %{
-        def #{unit}
-          self[:#{unit}]
-        end
-      }
-    end
-
-    protected
-    
-    # delta between the two points in miles
-    GeoDistance.units.each do |unit|
-      class_eval %{
-        def delta_#{unit}
-          GeoDistance.earth_radius[:#{unit}] * distance
-        end
-      }
-    end
-
-    class << self            
-      GeoDistance.units.each do |unit|
-        class_eval %{
-          def in_#{unit} number
-            Unit.new :#{unit}, number
-          end
-        }
-      end
-    end
-    
-    class Unit
-      attr_accessor :name, :number
-      
-      def initialize name, number = 0
-        @name = name
-        @number = number
-      end
-
-      def number
-        @number.round_to(precision[name])
-      end
-      
-      def to_s
-        "#{number} #{name}"
-      end
-      
-      private
-      
-      def precision
-        {
-          :feet => 0,
-          :meters => 2,
-          :km => 4,
-          :miles => 4
-        }
-      end      
-    end
-  end
-   
+       
   def self.wants? unit_opts, unit
     unit_opts == unit || unit_opts[unit]    
   end
 end
 
+require 'geo-distance/distance'
 require 'geo-distance/haversine'
 require 'geo-distance/spherical'
 require 'geo-distance/vincenty'
