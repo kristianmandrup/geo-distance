@@ -10,7 +10,7 @@ class GeoDistance
 
 
   EARTH_MAJOR_AXIS_RADIUS = { 
-    :miles      => 3963.19059 
+    :miles      => 3963.19059, 
     :kilometers => 6378.137,
     :meters     => 6378137,
     :feet       => 20925646.36
@@ -22,11 +22,6 @@ class GeoDistance
     :meters     => 6356752.3142,
     :feet       => 20855486.627
   }
-
-  autoload :Haversine,  'geo-distance/formula/haversine'
-  autoload :Spherical,  'geo-distance/formula/spherical'
-  autoload :Vincenty,   'geo-distance/formula/vincenty'
-  autoload :Flat,       'geo-distance/formula/flat'
 
   class DistanceFormula
     include Math

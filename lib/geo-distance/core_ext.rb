@@ -1,7 +1,7 @@
 require 'sugar-high/numeric'
 
 module GeoUnitExt
-  ::GeoDistance.units.each do |unit|
+  ::GeoDistance.all_units.each do |unit|
     class_eval %{
       def #{unit}
         GeoDistance.new(self, :#{unit})

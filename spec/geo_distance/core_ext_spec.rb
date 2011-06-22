@@ -5,7 +5,7 @@ describe "GeoDistance core extensions" do
     it 'should convert Fixnum to GeoDistance' do
       5.kms.should be_a GeoDistance
       5.kms.distance.should == 5
-      5.kms.unit.should == :km
+      5.kms.unit.should == :kms
     end
   end
 

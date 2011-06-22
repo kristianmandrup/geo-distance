@@ -1,34 +1,24 @@
-class GeoDistance 
-  attr_reader :distance, :unit
+require 'geo-distance/class_methods'
+
+class GeoDistance
+  include Comparable
+
+  include Conversion
+   
+  attr_accessor :distance, :unit
 
   def initialize distance, unit = :kms
     @distance = distance
-    return if !unit
-
-    raise ArgumentError, "Invalid unit: #{unit} - must be one of #{GeoDistance.units}" if !GeoDistance.units.include?(unit.to_sym)
-    @unit = unit.to_sym
+    @unit = GeoUnits.key(unit)
   end
 
   alias_method :units, :unit
 
-  GeoDistance.units.each do |unit|
-    class_eval %{
-      def #{unit}
-        delta_#{unit}
-      end
-      alias_method :to_#{unit}, :#{unit}
-    }
+  def <=> other
+     in_meters <=> other.in_meters
   end
 
-  protected
-
-  # delta between the two points in miles
-  GeoDistance.units.each do |unit|
-    class_eval %{
-      def delta_#{unit}
-        unit = GeoUnits.key(:#{unit})
-        GeoDistance.earth_radius[:#{unit}] * distance
-      end
-    }
+  def number
+    distance.round_to(precision[unit])
   end
 end

@@ -43,6 +43,10 @@ class GeoDistance
       GeoDistance.radians_per_degree * earth_radius[unit]          
     end
 
+    def all_units
+      [:miles, :mile, :kms, :km, :feet, :foot, :meter, :meters, :radians, :rad]
+    end
+
     def units 
       [:feet, :meters, :kms, :miles]
     end
