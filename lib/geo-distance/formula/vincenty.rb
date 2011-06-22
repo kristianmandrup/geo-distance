@@ -16,8 +16,8 @@ class GeoDistance
         to_longitude    = lon2.to_radians
         to_latitude     = lat2.to_radians
     
-        earth_major_axis_radius = EARTH_MAJOR_AXIS_RADIUS[:kilometers]
-        earth_minor_axis_radius = EARTH_MINOR_AXIS_RADIUS[:kilometers]
+        earth_major_axis_radius = GeoDistance.earth_major_axis_radius_map[:kilometers]
+        earth_minor_axis_radius = GeoDistance.earth_minor_axis_radius_map[:kilometers]
 
         f = (earth_major_axis_radius - earth_minor_axis_radius) / earth_major_axis_radius
 

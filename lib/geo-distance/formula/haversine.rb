@@ -48,9 +48,7 @@ class GeoDistance
 
         a = calc(dlat, lat1, lat2, dlon)
         c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
-
-        puts "units: #{units}"
-        
+                
         units ? c.radians_to(units) : c
       rescue Errno::EDOM
         0.0        

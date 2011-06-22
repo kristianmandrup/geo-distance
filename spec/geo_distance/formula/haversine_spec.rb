@@ -10,7 +10,7 @@ describe GeoDistance::Haversine do
       dist.should be_a(Float)
 
       puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-      dist.km_to(:feet).should == 24193.0
+      dist.kms_to(:feet).should == 24193.0
     end
   end
 

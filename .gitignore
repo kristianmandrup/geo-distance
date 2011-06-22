@@ -12,7 +12,8 @@ doc
 .bundle
 
 # jeweler generated
-pkg  
+pkg
+pkg/
 
 *.lock
 .DS_Store

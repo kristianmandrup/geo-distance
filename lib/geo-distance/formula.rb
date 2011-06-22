@@ -8,6 +8,7 @@ class GeoDistance
     extend Math
 
     include GeoUnits
+    extend GeoUnits
      
     def initialize
       raise NotImplementedError
@@ -44,7 +45,7 @@ class GeoDistance
     end
 
     def self.units_sphere_multiplier(units)
-      EARTH_RADIUS[GeoUnit.key units]
+      earth_radius_map[GeoUnit.key units]
     end
 
     def self.units_per_latitude_degree(units)

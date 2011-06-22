@@ -6,11 +6,11 @@ describe GeoDistance::Vincenty do
 
   describe '#distance' do         
     it "should calculate vincenty distance as Float" do
-      dist = GeoDistance::Vincenty.distance(from, to)
+      dist = GeoDistance::Vincenty.distance(from, to, :units => :kms)
       dist.should be_a(Float)
 
       puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-      dist.to_feet.should == 24193.0
+      dist.kms_to(:feet).should == 24193.0
     end
   end
 
