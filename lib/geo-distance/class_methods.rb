@@ -41,7 +41,7 @@ class GeoDistance
     end
 
     def earth_radius units
-      GeoDistance.EARTH_RADIUS[units.to_sym]
+      GeoUnits.earth_radius units
     end
 
     def radians_per_degree
@@ -53,11 +53,11 @@ class GeoDistance
     end
 
     def all_units
-      [:miles, :mile, :kms, :km, :feet, :foot, :meter, :meters, :radians, :rad]
+      GeoUnits.all_units
     end
 
     def units 
-      [:feet, :meters, :kms, :miles]
+      GeoUnits.units
     end
     
     def algorithms

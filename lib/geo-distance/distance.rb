@@ -7,7 +7,7 @@ class GeoDistance
    
   attr_accessor :distance, :unit
 
-  def initialize distance, unit = :kms
+  def initialize distance, unit = :radians
     @distance = distance
     @unit = GeoUnits.key(unit)
   end

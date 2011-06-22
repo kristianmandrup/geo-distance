@@ -1,46 +1,13 @@
 class GeoDistance  
   # WGS-84 numbers
+
+  include GeoUnits
   
-  EARTH_RADIUS = { 
-    :miles      => 3963.1676, 
-    :kilometers => 6378.135, 
-    :meters     =>  6378135, 
-    :feet       => 20925639.8 
-  }
-
-
-  EARTH_MAJOR_AXIS_RADIUS = { 
-    :miles      => 3963.19059, 
-    :kilometers => 6378.137,
-    :meters     => 6378137,
-    :feet       => 20925646.36
-  }
-
-  EARTH_MINOR_AXIS_RADIUS = { 
-    :kilometers => 6356.7523142,
-    :miles      => 3949.90276,
-    :meters     => 6356752.3142,
-    :feet       => 20855486.627
-  }
-
   class DistanceFormula
     include Math
     extend Math
 
-    RADIAN_PER_DEGREE = Math::PI / 180.0
-
-    # Haversine Formula
-    # Adapted from Geokit Gem
-    # https://github.com/andre/geokit-gem.git
-    # By: Andre Lewis
-    PI_DIV_RAD = 0.0174
-
-    KMS_PER_MILE = 1.609
-    METERS_PER_FEET = 3.2808399
-
-    MILES_PER_LATITUDE_DEGREE = 69.1
-    KMS_PER_LATITUDE_DEGREE = MILES_PER_LATITUDE_DEGREE * KMS_PER_MILE
-    LATITUDE_DEGREES = EARTH_RADIUS[:miles] / MILES_PER_LATITUDE_DEGREE
+    include GeoUnits
      
     def initialize
       raise NotImplementedError
@@ -85,10 +52,10 @@ class GeoDistance
     end
 
     def self.units_per_longitude_degree(lat, units)
-      miles_per_longitude_degree = (LATITUDE_DEGREES * Math.cos(lat * PI_DIV_RAD)).abs
+      miles_per_longitude_degree = (latitude_degrees * Math.cos(lat * pi_div_rad)).abs
       case units
         when :kms
-          miles_per_longitude_degree * KMS_PER_MILE
+          miles_per_longitude_degree * kms_per_mile
         when :miles
           miles_per_longitude_degree
       end

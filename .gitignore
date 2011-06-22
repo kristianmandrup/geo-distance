@@ -12,7 +12,11 @@ doc
 .bundle
 
 # jeweler generated
-pkg
+pkg  
+
+*.lock
+.DS_Store
+*/.DS_Store
 
 # Have editor/IDE/OS specific files you need to ignore? Consider using a global gitignore: 
 #

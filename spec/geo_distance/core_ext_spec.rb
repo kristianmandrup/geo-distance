@@ -1,6 +1,24 @@
 require 'spec_helper'
 
 describe "GeoDistance core extensions" do
+  
+  describe 'unit_to(other)' do  
+    describe '#radians_to' do  
+      it 'should convert radians to kms' do
+        5.radians_to(:kms).should be_within(2).of 556
+      end
+    end
+  end
+
+  describe '#radians' do  
+    it 'should convert Fixnum to GeoDistance' do
+      5.radians.should be_a GeoDistance
+      5.radians.distance.should == 5
+      5.radians.unit.should == :radians
+      5.radians.as_kms.should be_within(2).of 556
+    end
+  end
+
   describe '#kms' do  
     it 'should convert Fixnum to GeoDistance' do
       5.kms.should be_a GeoDistance
