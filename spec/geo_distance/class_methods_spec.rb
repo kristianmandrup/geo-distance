@@ -12,6 +12,16 @@ describe "GeoDistance class methods" do
       GeoDistance.earth_radius(:meters).should be_between(6371000, 6380000)
     end
   end
+
+  describe '#radians_ratio unit' do
+    it 'should return in kms' do
+      puts GeoDistance.radians_ratio unit(:kms) #.should be_between(6371, 6380)
+    end
+
+    it 'should return in meters' do
+      puts GeoDistance.radians_ratio unit(:meters) #.should be_between(6371000, 6380000)
+    end
+  end
   
   describe '#default_algorithm' do
     let(:from)  { [-104.88544, 39.06546].geo_point }

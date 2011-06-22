@@ -9,6 +9,8 @@ class GeoDistance
     @unit = unit.to_sym
   end
 
+  alias_method :units, :unit
+
   GeoDistance.units.each do |unit|
     class_eval %{
       def #{unit}

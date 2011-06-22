@@ -1,21 +1,29 @@
 require 'spec_helper'
 
-describe "GeoDistance::Vincenty" do
-  it "should work" do
-    lon1 = -104.88544
-    lat1 = 39.06546
+describe GeoDistance::Vincenty do
+  let(:from)  { [-104.88544, 39.06546].geo_point }
+  let(:to)    { [-104.80, 39.06546].geo_point }
 
-    lon2 = -104.80
-    lat2 = lat1
+  describe '#distance' do         
+    it "should calculate vincenty distance as Float" do
+      dist = GeoDistance::Vincenty.distance(from, to)
+      dist.should be_a(Float)
 
-    dist = GeoDistance::Vincenty.distance( lat1, lon1, lat2, lon2 )
+      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
+      dist.to_feet.should == 24193.0
+    end
+  end
 
-    puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist[:meters].number} meters"
+  describe '#geo_distance' do
+    it "should calculate vincenty distance as GeoDistance" do
+      dist = GeoDistance::Vincenty.geo_distance(from, to)
+      dist.should be_a(GeoDistance)
 
-    puts "#{dist[:feet]}"
-    puts "#{dist.meters}"
-    puts "#{dist[:km]}"
-    puts "#{dist[:miles]}"
-    dist[:km].to_s.should match(/7\.38*/)
+      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
+
+      dist.feet.should == 24193.0
+      dist.to_feet.should == 24193.0
+      dist.kms.to_s.should match(/7\.376*/)
+    end
   end
 end
