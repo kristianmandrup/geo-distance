@@ -33,19 +33,24 @@
 require 'geo-distance/core_ext'
 require 'geo-distance/formula'
 
-module GeoDistance
+class GeoDistance
   class Haversine < DistanceFormula
     # given two lat/lon points, compute the distance between the two points using the haversine formula
     #  the result will be a Hash of distances which are key'd by 'mi','km','ft', and 'm'
 
-    def self.distance( lat1, lon1, lat2, lon2) 
-      dlon = lon2 - lon1
-      dlat = lat2 - lat1
+    def self.distance *args
+      begin
+        from, to, units = get_points(args)
+        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng]
+        
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
 
-      a = calc(dlat, lat1, lat2, dlon)
-      c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
-
-      GeoDistance::Distance.new c
+        a = calc(dlat, lat1, lat2, dlon)
+        c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
+      rescue Errno::EDOM
+        0.0        
+      end
     end  
 
     def self.calc dlat, lat1, lat2, dlon

@@ -10,6 +10,7 @@ The formulas curently supported are
 * _Haversine_
 * _Spherical_
 * _Vincenty_
+* _Flat_
 
 h2. Install & Usage
 
@@ -22,17 +23,36 @@ it "should work" do
   lon2 = -104.80
   lat2 = lat1
 
-  dist = GeoDistance::Haversine.distance( lat1, lon1, lat2, lon2 )
+  dist = GeoDistance.distance( lat1, lon1, lat2, lon2 ) # in radians  
 
-  puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist[:meters].number} meters"
+  dist = GeoDistance::Haversine.geo_distance( lat1, lon1, lat2, lon2 ).to_meters
 
-  puts "#{dist[:feet]}"
-  puts "#{dist.meters}"
-  puts "#{dist[:km]}"
-  puts "#{dist[:miles]}"
-  dist[:km].to_s.should match(/7\.376*/)
+  # Change to (lng, lat) mode
+  GeoPoint.coord_mode = :lng_lat
+
+  p1, p2 = [[lon1, lat1].geo_point, [lon2, lat2].geo_point]
+
+  dist = GeoDistance::Haversine.geo_distance( lon1, lat1, lon2, lat2)
+  dist = GeoDistance::Haversine.geo_distance( p1, p2).to_miles
+
+  puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist.meters} meters"
+
+  dist.feet
+  dist.meters
+  dist.kms
+  dist.miles
 end  
-</pre>
+</pre>   
+
+h2. Distance API
+
+The call to distance returns an instance of GeoDistance
+
+@dist = GeoDistance::Haversine.distance( lat1, lon1, lat2, lon2 )@
+
+The #kms, #meters, #miles and #feet methods return an instance og GeoUnit
+
+@dist.kms@
 
 h3. Setting default algorithm
 

@@ -14,6 +14,9 @@ describe "GeoDistance default" do
 
     puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist[:meters].number} meters"
 
+    dist.feet.number.should == 24193.0
+    dist.to_feet.should == 24193.0
+
     puts "#{dist[:feet]}"
     puts "#{dist.meters}"
     puts "#{dist[:km]}"
