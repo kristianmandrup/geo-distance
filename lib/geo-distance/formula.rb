@@ -53,8 +53,10 @@ class GeoDistance
 
     # used to convert various argument types into GeoPoints
     def self.get_points(*args)
-      units = args.delete(args.last_option)
-      
+      args.flatten!
+      options = args.delete(args.last_option) || {}
+      units = options[:units] || GeoDistance.default_units
+
       case args.size
       when 2
         [GeoPoint.new(args.first), GeoPoint.new(args.last), units]
@@ -79,7 +81,7 @@ class GeoDistance
     end
 
     def self.units_per_latitude_degree(units)
-      GeoUnits.radian_multiplier(units.to_sym)
+      GeoUnits.radian_multiplier[units.to_sym]
     end
 
     def self.units_per_longitude_degree(lat, units)

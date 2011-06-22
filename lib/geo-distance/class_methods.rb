@@ -22,6 +22,15 @@ class GeoDistance
       klass.distance *args
     end
 
+    def default_units= name
+      raise ArgumentError, "Not a valid units. Must be one of: #{all_units}" if !all_units.include?(name.to_sym)
+      @default_units = GeoUnits.key(name)
+    end
+
+    def default_units
+      @default_units || :kms
+    end
+
     def default_algorithm= name
       raise ArgumentError, "Not a valid algorithm. Must be one of: #{algorithms}" if !algorithms.include?(name.to_sym)
       @default_algorithm = name 

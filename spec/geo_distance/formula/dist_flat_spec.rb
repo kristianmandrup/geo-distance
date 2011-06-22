@@ -6,11 +6,12 @@ describe GeoDistance::Flat do
 
   describe '#distance' do
     it "should calculate flat distance as Float" do
-      dist = GeoDistance::Flat.distance(from, to)
+      dist = GeoDistance::Flat.distance(from, to, :units => :kms)
       dist.should be_a(Float)
 
-      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-      dist.to_feet.should == 24193.0
+      # puts "the distance from #{from} to #{to} is: #{dist.km_to(:meters)} meters"
+      
+      dist.km_to(:feet).should be_within(8000).of 24193.0
     end
   end
 
@@ -19,11 +20,9 @@ describe GeoDistance::Flat do
       dist = GeoDistance::Flat.geo_distance(from, to)
       dist.should be_a(GeoDistance)
 
-      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
+      # puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
 
-      dist.feet.should == 24193.0
-      dist.to_feet.should == 24193.0
-      dist.kms.to_s.should match(/7\.376*/)
+      dist.feet.should be_within(8000).of 24193.0
     end
   end
 end

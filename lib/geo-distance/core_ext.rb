@@ -6,6 +6,11 @@ module GeoUnitExt
       def #{unit}
         GeoDistance.new(self, :#{unit})
       end
+
+      def #{unit}_to unit                           
+        unit = GeoUnits.key(unit)
+        send(:#{unit}).meters * GeoUnits.meters_map[unit]
+      end
     }
   end
 
