@@ -37,27 +37,24 @@ class GeoDistance
   class Haversine < DistanceFormula
     # given two lat/lon points, compute the distance between the two points using the haversine formula
     #  the result will be a Hash of distances which are key'd by 'mi','km','ft', and 'm'
-
+    
     def self.distance *args
       begin
         from, to, units = get_points(args)
-        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng]
         
+        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng]               
         dlon = lon2 - lon1
         dlat = lat2 - lat1
-
-        a = calc(dlat, lat1, lat2, dlon)
-        c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
+    
+        a = (Math.sin(dlat.rpd/2))**2 + Math.cos(lat1.rpd) * Math.cos((lat2.rpd)) * (Math.sin(dlon.rpd/2))**2
+        c = (2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a)))
+        c = c.to_deg
                 
         units ? c.radians_to(units) : c
       rescue Errno::EDOM
         0.0        
       end
     end  
-
-    def self.calc dlat, lat1, lat2, dlon
-      (Math.sin(dlat.rpd/2))**2 + Math.cos(lat1.rpd) * Math.cos((lat2.rpd)) * (Math.sin(dlon.rpd/2))**2    
-    end
   end
   
 end 

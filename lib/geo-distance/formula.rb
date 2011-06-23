@@ -1,13 +1,8 @@
-class GeoDistance  
-  # WGS-84 numbers
-
+class GeoDistance
   include GeoUnits
   
   class DistanceFormula
-    include Math
     extend Math
-
-    include GeoUnits
     extend GeoUnits
      
     def initialize
@@ -40,27 +35,28 @@ class GeoDistance
       GeoUnits.key(options[:units] || :kms)
     end
         
-    def self.degrees_to_radians(degrees)
-      degrees.to_f / 180.0 * Math::PI
-    end
+    # def self.degrees_to_radians(degrees)   
+    #   # degrees.to_f / 180.0 * Math::PI
+    #   degrees.to_f * radians_per_degree
+    # end
 
-    def self.units_sphere_multiplier(units)
-      earth_radius_map[GeoUnit.key units]
-    end
-
-    def self.units_per_latitude_degree(units)
-      GeoUnits.radian_multiplier[units.to_sym]
-    end
-
-    def self.units_per_longitude_degree(lat, units)
-      miles_per_longitude_degree = (latitude_degrees * Math.cos(lat * pi_div_rad)).abs
-      case units
-        when :kms
-          miles_per_longitude_degree * kms_per_mile
-        when :miles
-          miles_per_longitude_degree
-      end
-    end    
+    # def self.units_sphere_multiplier(units)
+    #   earth_radius_map[GeoUnit.key units]
+    # end
+    # 
+    # def self.units_per_latitude_degree(units)
+    #   GeoUnits.radian_multiplier[units.to_sym]
+    # end
+    # 
+    # def self.units_per_longitude_degree(lat, units)
+    #   miles_per_longitude_degree = (latitude_degrees * Math.cos(lat * pi_div_rad)).abs
+    #   case units
+    #     when :kms
+    #       miles_per_longitude_degree * kms_per_mile
+    #     when :miles
+    #       miles_per_longitude_degree
+    #   end
+    # end    
   end
 end
     

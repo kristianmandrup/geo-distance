@@ -30,12 +30,13 @@ class GeoDistance
       
       return 0.0 if from == to #return 0.0 if points are have the same coordinates
 
-      units_sphere_multiplier(units) * 
-      Math.acos( 
+      c = Math.acos( 
         Math.sin(degrees_to_radians(from.lat)) * Math.sin(degrees_to_radians(to.lat)) + 
         Math.cos(degrees_to_radians(from.lat)) * Math.cos(degrees_to_radians(to.lat)) * 
         Math.cos(degrees_to_radians(to.lng) - degrees_to_radians(from.lng))
-      )
+      ).to_deg
+      
+      units ? c.radians_to(units) : c
     rescue Errno::EDOM
       0.0
     end

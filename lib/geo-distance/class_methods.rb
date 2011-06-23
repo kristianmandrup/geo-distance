@@ -16,6 +16,8 @@ class GeoDistance
         GeoDistance::Spherical        
       when :vincenty
         GeoDistance::Vincenty
+      when :nvector
+        GeoDistance::NVector
       else
         raise ArgumentError, "Not a valid algorithm. Must be one of: #{algorithms}"
       end
@@ -61,7 +63,7 @@ class GeoDistance
     end
     
     def algorithms
-      [:flat, :haversine, :spherical, :vincenty]
+      [:flat, :haversine, :spherical, :vincenty, :nvector]
     end
   end
   

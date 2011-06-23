@@ -16,8 +16,8 @@ class GeoDistance
         to_longitude    = lon2.to_radians
         to_latitude     = lat2.to_radians
     
-        earth_major_axis_radius = GeoDistance.earth_major_axis_radius_map[:kilometers]
-        earth_minor_axis_radius = GeoDistance.earth_minor_axis_radius_map[:kilometers]
+        earth_major_axis_radius = earth_major_axis_radius_map[:kilometers]
+        earth_minor_axis_radius = earth_minor_axis_radius_map[:kilometers]
 
         f = (earth_major_axis_radius - earth_minor_axis_radius) / earth_major_axis_radius
 
@@ -30,7 +30,7 @@ class GeoDistance
         cos_u2 = cos(u2)
 
         lambda = l
-        lambda_p = 2 * PI
+        lambda_p = 2 * Math::PI
         iteration_limit = 20
         while (lambda-lambda_p).abs > 1e-12 && (iteration_limit -= 1) > 0
           sin_lambda = sin(lambda)
@@ -63,8 +63,9 @@ class GeoDistance
      
         c = earth_minor_axis_radius * a * (sigma-delta_sigma)
 
-        c / unkilometer
+        c = (c / unkilometer).to_deg
 
+        units ? c.radians_to(units) : c
       rescue Errno::EDOM
         0.0
       end

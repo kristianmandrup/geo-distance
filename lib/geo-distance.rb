@@ -8,6 +8,7 @@ class GeoDistance
   autoload :Haversine,    'geo-distance/formula/haversine'
   autoload :Spherical,    'geo-distance/formula/spherical'
   autoload :Vincenty,     'geo-distance/formula/vincenty'
+  autoload :NVector,      'geo-distance/formula/n_vector'
   autoload :Flat,         'geo-distance/formula/flat'
 end  
 

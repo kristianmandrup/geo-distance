@@ -8,6 +8,12 @@ describe "GeoDistance core extensions" do
         5.radians_to(:kms).should be_within(2).of 556
       end
     end
+
+    describe '#kms_to' do  
+      it 'should convert radians to kms' do
+        5.kms_to(:feet).should be_within(1000).of 16000
+      end
+    end
   end
 
   describe '#radians' do  

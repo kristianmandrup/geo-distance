@@ -1,29 +1,33 @@
 require 'spec_helper'
 
 describe GeoDistance::Spherical do
-  let(:from)  { [-104.88544, 39.06546].geo_point }
-  let(:to)    { [-104.80, 39.06546].geo_point }
+    let(:from) do 
+      [45, 10].geo_point
+    end
 
-  describe '#distance' do
-    it "should calculate spherical distance as Float" do    
-      dist = GeoDistance::Spherical.distance(from, to, :units => :kms)
-      dist.should be_a(Float)
+    let(:to) do   
+      b = [42, 11].geo_point
+    end
 
-      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-      dist.kms_to(:feet).should == 24193.0
+    describe '#distance' do
+      it "should calculate spherical distance as Float" do
+        dist = GeoDistance::Spherical.distance(from, to)
+
+        dist.should be_a(Float)
+
+        puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
+        dist.should be_within(20).of 340
+      end
+    end
+
+    describe '#geo_distance' do
+      it "should calculate spherical distance as GeoDistance" do
+        dist = GeoDistance::Spherical.geo_distance(from, to)
+        dist.should be_a(GeoDistance)
+
+        puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
+
+        dist.kms.should be_within(20).of 340
+      end
     end
   end
-
-  describe '#geo_distance' do
-    it "should calculate spherical distance as GeoDistance" do
-      dist = GeoDistance::Spherical.geo_distance(from, to)
-      dist.should be_a(GeoDistance)
-
-      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-
-      dist.feet.should == 24193.0
-      dist.to_feet.should == 24193.0
-      dist.kms.to_s.should match(/7\.376*/)
-    end
-  end
-end

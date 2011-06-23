@@ -1,16 +1,21 @@
 require 'spec_helper'
 
 describe GeoDistance::Flat do
-  let(:from)  { [-104.88544, 39.06546].geo_point }
-  let(:to)    { [-104.80, 39.06546].geo_point }
+  let(:from) do 
+    [45, 10].geo_point
+  end
+
+  let(:to) do   
+    b = [42, 11].geo_point
+  end
 
   describe '#distance' do
     it "should calculate flat distance as Float" do
       dist = GeoDistance::Flat.distance(from, to, :units => :kms)
       dist.should be_a(Float)
 
-      # puts "the distance from #{from} to #{to} is: #{dist.km_to(:meters)} meters"      
-      dist.kms_to(:feet).should be_within(8000).of 24193.0
+      puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
+      dist.should be_within(10).of 340
     end
   end
 
@@ -20,7 +25,7 @@ describe GeoDistance::Flat do
       dist.should be_a(GeoDistance)
 
       # puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
-      dist.feet.should be_within(8000).of 24193.0
+      dist.kms.should be_within(10).of 340
     end
   end
 end

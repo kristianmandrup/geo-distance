@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem 'geo_point', '~> 0.2.5'
-gem 'geo_units', '~> 0.2.4'
+gem 'geo_units', '~> 0.2.4.1'
 
 group :development do
   gem "rspec",    ">= 2.6.0"
