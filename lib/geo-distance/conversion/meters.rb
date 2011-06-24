@@ -9,19 +9,19 @@ class GeoDistance
 
       def to_meters!
         self.distance = convert_to_meters distance
-        self.unit = :meters
+        self.units = :meters
         self
       end
       alias_method :in_meters!, :to_meters!
       alias_method :as_meters!, :to_meters!
 
       def convert_to_meters dist
-        (unit == :meters) ? dist : distance / GeoUnits::Maps::Meters.to_unit_multiplier[unit]
+        (units == :meters) ? dist : distance / GeoUnits::Maps::Meters.to_unit_multiplier[units]
       end
 
       def to_meters!
         @distance = in_meters
-        @unit = :meters
+        @units = :meters
         self
       end 
     end

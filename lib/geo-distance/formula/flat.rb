@@ -4,7 +4,7 @@ require 'geo-distance/formula'
 class GeoDistance
   module Formula
     class Flat < Abstract
-      def initialize options = {}
+      def initialize globe = nil
         super
       end
 

@@ -11,7 +11,7 @@ module GeoDistance
     end
 
     def miles_per_latitude_degree 
-      69.1
+      raise NotImplementedError
     end
 
     def kms_per_latitude_degree
@@ -19,33 +19,35 @@ module GeoDistance
     end
 
     def latitude_degrees 
-      earth_radius_map[:miles] / miles_per_latitude_degree
+      radius.to_miles / miles_per_latitude_degree
     end 
         
     def units_sphere_multiplier(units)
       units = GeoUnits.key units
-      radius[units]
+      radius.to_units(units)
     end
 
     def units_per_latitude_degree(units)
-      units = GeoUnits.key units
-      GeoUnits::Maps.radian_multiplier[units]
+      degree_multiplier unit_key(units)
     end
 
     def units_per_longitude_degree(lat, units)
       miles_per_longitude_degree = (latitude_degrees * Math.cos(lat * pi_div_rad)).abs 
-      units = GeoUnits.key units
-      miles_per_longitude_degree.miles_to(units)
+      miles_per_longitude_degree.miles_to unit_key(units)
     end 
-
-    def earth_radius units
-      units = GeoUnits.key units
-      GeoUnits::Maps.earth_radius_map[units]
-    end
     
     def radians_ratio units
-      units = GeoUnits.key units
-      radians_per_degree * earth_radius(units)
-    end    
+      radians_per_degree * radius.to_units(unit_key(units))
+    end  
+    
+    protected
+
+    def unit_key units
+      GeoUnits.key units
+    end
+    
+    def degree_multiplier units
+      GeoUnits::Maps.degree_multiplier[units]  
+    end
   end
 end

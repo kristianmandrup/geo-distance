@@ -6,18 +6,18 @@ module GeoDistance
       super
     end
 
-    def radius name = nil
-      @radius ||= globe.radius(:kms)
+    def radius units = :kms
+      @radius ||= globe.radius(units)
     end
 
     protected
     
-    def minor_axis_radius    
-      @minor_axis_radius ||= globe.minor_axis_radius(:kms)
+    def minor_axis_radius units = :kms
+      @minor_axis_radius ||= globe.minor_axis_radius(units)
     end
     
-    def major_axis_radius    
-      @major_axis_radius ||= globe.major_axis_radius(:kms)
+    def major_axis_radius units = :kms   
+      @major_axis_radius ||= globe.major_axis_radius(units)
     end
 
     def globe

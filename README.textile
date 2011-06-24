@@ -29,7 +29,7 @@ h2. Usage example (Rspec 2)
 
 <pre>require 'geo-distance'
 
-describe GeoDistance::Haversine do
+describe GeoDistance do
   let(:from) do 
     [45, 10].geo_point
   end
@@ -42,7 +42,7 @@ describe GeoDistance::Haversine do
     it "should calculate haversine distance as Float" do
 
       # specify units using :units option, fx :units => :miles
-      dist = GeoDistance::Haversine.distance(from, to) 
+      dist = GeoDistance.haversine(from, to, :globe => my_globe) 
       dist.should be_a(Float)
 
       puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
@@ -53,7 +53,7 @@ describe GeoDistance::Haversine do
 
   describe '#geo_distance' do
     it "should calculate haversine distance as GeoDistance" do
-      dist = GeoDistance::Haversine.geo_distance(from, to)
+      dist = GeoDistance.haversine_dist(from, to)
       dist.should be_a(GeoDistance)
 
       puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
@@ -70,6 +70,16 @@ describe GeoDistance::Haversine do
   end  
 end
 </pre>   
+
+h2. Configuration and other notes
+
+GeoDistance has the following global settings:
+
+* default_formula
+* default_units
+* default_globe
+
+All distances are calculated relative to the globe, which by default is set to the Earth.
 
 h2. Distance API
 

@@ -6,12 +6,10 @@ module GeoDistance
       extend Math
       extend GeoUnits
 
-      attr_reader :globe_radius_kms, :globe_minor_axis_radius, :globe_major_axis_radius
+      attr_reader :globe
    
-      def initialize options = {}
-        @globe_radius_kms = options[:globe_radius_kms] || earth_radius(:kms)
-        @globe_minor_axis_radius = options[:globe_minor_axis_radius] || earth_minor_axis_radius[:kms]
-        @globe_major_axis_radius = options[:globe_major_axis_radius] || earth_major_axis_radius[:kms]      
+      def initialize globe = nil
+        @globe = globe || GeoDistance::Earth.new
       end
 
       PI = Math::PI

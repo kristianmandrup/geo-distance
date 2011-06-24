@@ -1,42 +1,27 @@
 class GeoDistance 
-  # this is global because if computing lots of track point distances, it didn't make 
-  # sense to new a Hash each time over potentially 100's of thousands of points
-
   def self.formulas
     [:flat, :haversine, :spherical, :vincenty, :nvector]
   end
 
   formulas.each do |formula|
     class_eval %{
-      def self.#{formula}_distance *args
+      def self.#{formula} *args
         GeoDistance.distance args, :formula => :#{formula}
       end
 
-      def self.#{formula}_geo_distance *args
+      def self.#{formula}_dist *args
         GeoDistance.geo_distance args, :formula => :#{formula}
       end
     }
   end
 
-  module ClassMethods
-    # radius of the great circle in miles
-    # radius in kilometers...some algorithms use 6367
-        
+  module ClassMethods        
     def distance *args
-      puts "Class: #{distance_class(*args)}"
-      distance_class(*args).distance *args
+      distance_calculator(*args).distance *args
     end
 
-    def geo_distance *args
-      puts "Class: #{distance_class(*args)}"
-      distance_class(*args).geo_distance *args
-    end
-
-    def distance_class *args    
-      formula = args.last_option[:formula] || default_formula
-      "GeoDistance::#{formula.to_s.camelize}".constantize
-    rescue
-      raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}"
+    def geo_distance *args      
+      distance_calculator(*args).geo_distance *args
     end
 
     def default_units= name
@@ -48,33 +33,36 @@ class GeoDistance
       @default_units || :kms
     end
 
+    def default_globe= globe
+      raise ArgumentError, "Not a valid globe. Must be an instance of: GeoDistance::Globe" if !globe.kind_of? GeoDistance::Globe
+      @default_globe = globe
+    end
+
+    def default_globe
+      @default_globe ||= GeoDistance::Globe::Earth.new
+    end
+
     def default_formula= name
       raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}" if !formulas.include?(name.to_sym)
       @default_formula = name 
     end
     
-    def default_algorithm 
-      @default_algorithm || :haversine
-    end
+    def default_formula 
+      @default_formula || :haversine
+    end  
+    
+    protected
 
-    def earth_radius units
-      GeoUnits.earth_radius units
+    def distance_calculator *args
+      options = args.last_option || {}
+      distance_class(*args).new(options[:globe])      
     end
-
-    def radians_per_degree
-      0.017453293  #  PI/180
-    end    
-        
-    def radians_ratio unit
-      GeoDistance.radians_per_degree * earth_radius[unit]          
-    end
-
-    def all_units
-      GeoUnits.all_units
-    end
-
-    def units 
-      GeoUnits.units
+    
+    def distance_class *args    
+      formula = args.last_option[:formula] || default_formula
+      "GeoDistance::#{formula.to_s.camelize}".constantize
+    rescue
+      raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}"
     end    
   end
   

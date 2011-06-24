@@ -15,6 +15,7 @@ class Numeric
 end
 
 class Array
+  # used to convert GeoPoints to radians in distance formulas
   def to_radians!
     self.map! {|item| item.to_radians! }
   end
