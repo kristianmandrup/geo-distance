@@ -19,13 +19,13 @@ class GeoDistance
 
       # calculate the distance in radians for the given latitude
       def in_radians lat = 0
-        (unit != :radians) ? distance.to_f / earth_factor(lat) : distance # radians_conversion_factor
+        (unit != :radians) ? distance.to_f / globe_lat_factor(lat) : distance # radians_conversion_factor
       end
 
       protected
       
-      def earth_factor u = nil, lat = 0
-        (GeoDistance.earth_radius[u ||= unit] / 180) * latitude_factor(lat)
+      def globe_lat_factor u = nil, lat = 0
+        (GeoDistance.globe_radius[u ||= unit] / 180) * latitude_factor(lat)
       end      
       
       def latitude_factor latitude = 0

@@ -1,4 +1,4 @@
-module GeoUnits
+module GeoDistance
   class Earth < Globe
     attr_reader :radius, :minor_axis_radius, :major_axis_radius
      
@@ -7,17 +7,21 @@ module GeoUnits
     end
 
     def radius name = nil
-      @radius ||= GeoUnits::Earth.radius(:kms)
+      @radius ||= globe.radius(:kms)
     end
 
     protected
     
     def minor_axis_radius    
-      @minor_axis_radius ||= GeoUnits::Earth.minor_axis_radius(:kms)
+      @minor_axis_radius ||= globe.minor_axis_radius(:kms)
     end
     
     def major_axis_radius    
-      @major_axis_radius ||= GeoUnits::Earth.major_axis_radius(:kms)
+      @major_axis_radius ||= globe.major_axis_radius(:kms)
+    end
+
+    def globe
+      GeoUnits::Globe::Earth
     end
     
     def miles_per_latitude_degree 

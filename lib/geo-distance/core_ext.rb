@@ -14,3 +14,8 @@ class Numeric
   include GeoDistanceExt
 end
 
+class Array
+  def to_radians!
+    self.map! {|item| item.to_radians! }
+  end
+end

@@ -12,13 +12,14 @@ class GeoDistance
     def distance *args
       begin
         from, to, units = get_points(args)        
-        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng].map{|deg| deg.rpd }
-            
-        f = (globe_major_axis_radius_kms - globe_minor_axis_radius_kms) / globe_major_axis_radius_kms
+        [from, to].to_radians!
 
-        l = lon2 - lon1
-        u1 = atan((1-f) * tan(lat1))
-        u2 = atan((1-f) * tan(lat2))
+        axis_diff = major_axis_radius(:kms) - minor_axis_radius(:kms)
+        f = axis_diff / major_axis_radius(:kms)
+
+        l = to.lon - from.lon
+        u1 = atan((1-f) * tan(from.lat))
+        u2 = atan((1-f) * tan(to.lat))
         sin_u1 = sin(u1)
         cos_u1 = cos(u1)
         sin_u2 = sin(u2)
@@ -67,7 +68,8 @@ class GeoDistance
     end
 
     private
-    
+
+    # TOO: just use to_radians!?
     def self.unkilometer    
       6378.135
     end      

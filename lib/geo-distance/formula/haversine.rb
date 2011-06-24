@@ -21,11 +21,12 @@ class GeoDistance
     def distance *args
       begin
         from, to, units = get_points(args)
-        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng].map{|deg| deg.rpd }               
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
+        [from, to].to_radians!
+
+        dlon = to.lng - from.lng
+        dlat = to.lat - from.lat
     
-        a = (Math.sin(dlat/2))**2 + Math.cos(lon1) * Math.cos(lon2) * (Math.sin(dlon/2))**2
+        a = (Math.sin(dlat/2))**2 + Math.cos(from.lng) * Math.cos(to.lng) * (Math.sin(dlon/2))**2
         c = (2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))).to_deg
                 
         units ? c.radians_to(units) : c

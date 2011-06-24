@@ -16,7 +16,7 @@ class GeoDistance
       alias_method :as_meters!, :to_meters!
 
       def convert_to_meters dist
-        (unit == :meters) ? dist : distance / GeoUnits.meters_map[unit]
+        (unit == :meters) ? dist : distance / GeoUnits::Maps::Meters.to_unit_multiplier[unit]
       end
 
       def to_meters!
