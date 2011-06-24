@@ -2,7 +2,6 @@ require 'geo-distance/class_methods'
 
 class GeoDistance
   include Comparable
-
   include Conversion
    
   attr_accessor :distance, :unit

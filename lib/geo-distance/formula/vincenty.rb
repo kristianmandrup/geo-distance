@@ -3,34 +3,29 @@ require 'geo-distance/formula'
 
 class GeoDistance
   class Vincenty < DistanceFormula
+    def initialize options = {}
+      super
+    end
 
     # Calculate the distance between two Locations using the Vincenty formula
     #
-    def self.distance *args
+    def distance *args
       begin
         from, to, units = get_points(args)        
-        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng]
-        
-        from_longitude  = lon1.to_radians
-        from_latitude   = lat1.to_radians
-        to_longitude    = lon2.to_radians
-        to_latitude     = lat2.to_radians
-    
-        earth_major_axis_radius = earth_major_axis_radius_map[:kilometers]
-        earth_minor_axis_radius = earth_minor_axis_radius_map[:kilometers]
+        lat1, lon1, lat2, lon2 = [from.lat, from.lng, to.lat, to.lng].map{|deg| deg.rpd }
+            
+        f = (globe_major_axis_radius_kms - globe_minor_axis_radius_kms) / globe_major_axis_radius_kms
 
-        f = (earth_major_axis_radius - earth_minor_axis_radius) / earth_major_axis_radius
-
-        l = to_longitude - from_longitude
-        u1 = atan((1-f) * tan(from_latitude))
-        u2 = atan((1-f) * tan(to_latitude))
+        l = lon2 - lon1
+        u1 = atan((1-f) * tan(lat1))
+        u2 = atan((1-f) * tan(lat2))
         sin_u1 = sin(u1)
         cos_u1 = cos(u1)
         sin_u2 = sin(u2)
         cos_u2 = cos(u2)
 
         lambda = l
-        lambda_p = 2 * Math::PI
+        lambda_p = 2 * PI
         iteration_limit = 20
         while (lambda-lambda_p).abs > 1e-12 && (iteration_limit -= 1) > 0
           sin_lambda = sin(lambda)
@@ -55,13 +50,13 @@ class GeoDistance
        # We'll call Haversine formula instead.
        return Haversine.distance(from, to, units) if iteration_limit == 0 
 
-       uSq = cosSqAlpha * (earth_major_axis_radius**2 - earth_minor_axis_radius**2) / (earth_minor_axis_radius**2)
+       uSq = cosSqAlpha * (globe_major_axis_radius_kms**2 - globe_minor_axis_radius_kms**2) / (globe_minor_axis_radius_kms**2)
        a = 1 + uSq/16384*(4096+uSq*(-768+uSq*(320-175*uSq)))
        b = uSq/1024 * (256+uSq*(-128+uSq*(74-47*uSq)))
        delta_sigma = b*sin_sigma*(cos2SigmaM+b/4*(cos_sigma*(-1+2*cos2SigmaM*cos2SigmaM)-
          b/6*cos2SigmaM*(-3+4*sin_sigma*sin_sigma)*(-3+4*cos2SigmaM*cos2SigmaM)))
      
-        c = earth_minor_axis_radius * a * (sigma-delta_sigma)
+        c = globe_minor_axis_radius_kms * a * (sigma-delta_sigma)
 
         c = (c / unkilometer).to_deg
 

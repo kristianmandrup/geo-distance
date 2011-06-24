@@ -7,14 +7,26 @@ class GeoDistance
       base.send :include, Meters
       base.send :include, Radians
     end
+
+    def from_units(units)
+      GeoUnits::Maps::Meters.from_unit_multiplier[units]
+    end
+
+    def to_units(units)
+      GeoUnits::Maps::Meters.to_unit_multiplier[units]
+    end
+
+    def unit_key units
+      GeoUnits.key units
+    end
     
     # return new GeoDistance instance with distance converted to specific unit
     ::GeoDistance.units.each do |unit|
       class_eval %{
         def to_#{unit}
           cloned = self.dup
-          un = GeoUnits.key :#{unit}
-          cloned.distance = in_meters * GeoUnits.meters_map[un]
+          un = unit_key :#{unit}
+          cloned.distance = in_meters * to_units(un)
           cloned.unit = un
           cloned
         end
@@ -27,14 +39,14 @@ class GeoDistance
       class_eval %{
         def in_#{unit}
           dist = (unit == :radians) ? in_radians : distance            
-          conv_unit = GeoUnits.key :#{unit}
-          convert_to_meters(dist) * GeoUnits.meters_map[conv_unit]
+          conv_unit = unit_key :#{unit}
+          convert_to_meters(dist) * to_units(conv_unit)
         end
         alias_method :as_#{unit}, :in_#{unit}
 
         def to_#{unit}!
-          conv_unit = GeoUnits.key :#{unit}
-          self.distance = in_meters * GeoUnits.meters_map[conv_unit]
+          conv_unit = unit_key :#{unit}
+          self.distance = in_meters * to_units(conv_unit)
           self.unit = conv_unit
           self
         end
@@ -46,22 +58,10 @@ class GeoDistance
     ::GeoDistance.all_units.each do |unit|
       class_eval %{
         def #{unit}
-          un = GeoUnits.key :#{unit}
+          un = unit_key :#{unit}
           send(:"as_\#{un}")
         end
       }
     end
-        
-    protected
-
-    # distance delta 
-    GeoDistance.units.each do |unit|
-      class_eval %{
-        def delta_#{unit}
-          unit = GeoUnits.key(:#{unit})
-          GeoDistance.earth_radius[:#{unit}] * distance
-        end
-      }
-    end       
   end
 end

@@ -1,58 +1,83 @@
 h1. GeoDistance - geo distance calculations
 
-Calculates the Geo distance between two locations using longitude and latitude. 
-This is done using "pure" Math formulas without resorting to Active Record or SQL DB functionality
+Calculates the Geographical shortest distance between two locations using longitude and latitude. 
+This is done using "pure" Math formulas without resorting to Database provided functionality
 
 This gem is meant to be a replacement for those geo distance utils out there that use built in SQL DB functionality for their calculations!
 
 The formulas curently supported are
 
-* _Haversine_
-* _Spherical_
-* _Vincenty_
-* _Flat_
+* _Haversine_ 
+* _Spherical_ 
+* _Vincenty_ 
+* _NVector_ 
+* _Flat_ 
 
-h2. Install & Usage
+The algorithm is specified using a symbol of either: [:flat, :haversine, :spherical, :vincenty, :nvector]
+
+h2. Install
+
+in Gemfile:
+
+@gem 'geo-distance'@ 
+
+Run bundler:
+
+@$ bundle@
+
+h2. Usage example (Rspec 2)
 
 <pre>require 'geo-distance'
 
-it "should work" do
-  lon1 = -104.88544
-  lat1 = 39.06546
+describe GeoDistance::Haversine do
+  let(:from) do 
+    [45, 10].geo_point
+  end
 
-  lon2 = -104.80
-  lat2 = lat1
+  let(:to) do   
+    b = [42, 11].geo_point
+  end
 
-  dist = GeoDistance.distance( lat1, lon1, lat2, lon2 ) # in radians  
+  describe '#distance' do
+    it "should calculate haversine distance as Float" do
 
-  dist = GeoDistance::Haversine.geo_distance( lat1, lon1, lat2, lon2 ).to_meters
+      # specify units using :units option, fx :units => :miles
+      dist = GeoDistance::Haversine.distance(from, to) 
+      dist.should be_a(Float)
 
-  # Change to (lng, lat) mode
-  GeoPoint.coord_mode = :lng_lat
+      puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
 
-  p1, p2 = [[lon1, lat1].geo_point, [lon2, lat2].geo_point]
+      dist.should be_within(4).of 340
+    end
+  end
 
-  dist = GeoDistance::Haversine.geo_distance( lon1, lat1, lon2, lat2)
-  dist = GeoDistance::Haversine.geo_distance( p1, p2).to_miles
+  describe '#geo_distance' do
+    it "should calculate haversine distance as GeoDistance" do
+      dist = GeoDistance::Haversine.geo_distance(from, to)
+      dist.should be_a(GeoDistance)
 
-  puts "the distance from  #{lat1}, #{lon1} to #{lat2}, #{lon2} is: #{dist.meters} meters"
+      puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
 
-  dist.feet
-  dist.meters
-  dist.kms
-  dist.miles
-end  
+      dist.kms.should be_within(4).of 340
+    end
+  end
+  
+  it "should set default_algorithm to :haversine" do
+    GeoDistance.default_algorithm = :haversine
+
+    dist = GeoDistance.distance(from, to, :units => :miles)
+    geo_dist = GeoDistance.geo_distance(from, to, :units => :meters)
+  end  
+end
 </pre>   
 
 h2. Distance API
 
-The call to distance returns an instance of GeoDistance
+The call to _geo_distance_ returns an instance of GeoDistance
 
-@dist = GeoDistance::Haversine.distance( lat1, lon1, lat2, lon2 )@
+@dist = GeoDistance::Haversine.geo_distance( lat1, lon1, lat2, lon2 )@
 
-The #kms, #meters, #miles and #feet methods return an instance og GeoUnit
-
-@dist.kms@
+The #kms, #meters, #miles and #feet methods return the length in the given unit.
 
 h3. Setting default algorithm
 
@@ -62,9 +87,13 @@ The following will use the _Haversine_ algorithm:
 <pre>
   GeoDistance.default_algorithm = :haversine
   dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
+  dist2 = GeoDistance.distance( [lat1, lon1], [lat2, lon2] )  
 </pre>
 
-GeoDistance is used in the "geo_magic":https://github.com/kristianmandrup/geo_magic gem
+Note that _GeoDistance_ uses "geo_point":https://github.com/kristianmandrup/geo_point for parsing arguments into two GeoPoints (point A to point B). 
+It can handle: Numeric, Array, Hash, String (even in DMS format). See geo_point for more...
+
+GeoDistance can be used in "mongoid_geo":https://github.com/kristianmandrup/mongoid-geo gem, as a distance calculator (in case the internal Mongo DB calculation is not used). 
 
 h2. Contributing to geo-distance
  

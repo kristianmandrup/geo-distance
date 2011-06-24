@@ -10,11 +10,7 @@ module GeoDistanceExt
   end
 end
 
-class Fixnum
+class Numeric
   include GeoDistanceExt
 end
 
-class Float
-  include GeoDistanceExt
-end
-  

@@ -15,11 +15,24 @@ describe "GeoDistance class methods" do
 
   describe '#radians_ratio unit' do
     it 'should return in kms' do
-      puts GeoDistance.radians_ratio unit(:kms) #.should be_between(6371, 6380)
+      puts GeoDistance.radians_ratio(:kms) #.should be_between(6371, 6380)
     end
 
     it 'should return in meters' do
-      puts GeoDistance.radians_ratio unit(:meters) #.should be_between(6371000, 6380000)
+      puts GeoDistance.radians_ratio(:meters) #.should be_between(6371000, 6380000)
+    end
+  end
+
+  describe '#distance' do
+    describe ':algorithm option' do
+      let(:from)  { [-104.88544, 39.06546].geo_point }
+      let(:to)    { [-104.80, 39.06546].geo_point }
+
+      it "should use :spherical" do
+        dist = GeoDistance.distance(from, to, :formula => :spherical)
+        dist2 = GeoDistance.spherical_distance(from, to)
+        dist.should == dist2
+      end
     end
   end
   

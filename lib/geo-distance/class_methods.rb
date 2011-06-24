@@ -2,26 +2,41 @@ class GeoDistance
   # this is global because if computing lots of track point distances, it didn't make 
   # sense to new a Hash each time over potentially 100's of thousands of points
 
+  def self.formulas
+    [:flat, :haversine, :spherical, :vincenty, :nvector]
+  end
+
+  formulas.each do |formula|
+    class_eval %{
+      def self.#{formula}_distance *args
+        GeoDistance.distance args, :formula => :#{formula}
+      end
+
+      def self.#{formula}_geo_distance *args
+        GeoDistance.geo_distance args, :formula => :#{formula}
+      end
+    }
+  end
+
   module ClassMethods
     # radius of the great circle in miles
     # radius in kilometers...some algorithms use 6367
         
-    def distance(*args) 
-      klass = case default_algorithm
-      when :flat
-        GeoDistance::Flat
-      when :haversine
-        GeoDistance::Haversine
-      when :spherical
-        GeoDistance::Spherical        
-      when :vincenty
-        GeoDistance::Vincenty
-      when :nvector
-        GeoDistance::NVector
-      else
-        raise ArgumentError, "Not a valid algorithm. Must be one of: #{algorithms}"
-      end
-      klass.distance *args
+    def distance *args
+      puts "Class: #{distance_class(*args)}"
+      distance_class(*args).distance *args
+    end
+
+    def geo_distance *args
+      puts "Class: #{distance_class(*args)}"
+      distance_class(*args).geo_distance *args
+    end
+
+    def distance_class *args    
+      formula = args.last_option[:formula] || default_formula
+      "GeoDistance::#{formula.to_s.camelize}".constantize
+    rescue
+      raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}"
     end
 
     def default_units= name
@@ -33,9 +48,9 @@ class GeoDistance
       @default_units || :kms
     end
 
-    def default_algorithm= name
-      raise ArgumentError, "Not a valid algorithm. Must be one of: #{algorithms}" if !algorithms.include?(name.to_sym)
-      @default_algorithm = name 
+    def default_formula= name
+      raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}" if !formulas.include?(name.to_sym)
+      @default_formula = name 
     end
     
     def default_algorithm 
@@ -60,12 +75,8 @@ class GeoDistance
 
     def units 
       GeoUnits.units
-    end
-    
-    def algorithms
-      [:flat, :haversine, :spherical, :vincenty, :nvector]
-    end
+    end    
   end
   
-  extend ClassMethods       
+  extend ClassMethods  
 end
