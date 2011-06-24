@@ -5,9 +5,11 @@ module GeoDistance
     attr_reader :radius, :minor_axis_radius, :major_axis_radius
      
     def initialize options = {}
+      raise ArgumentError, "To create a globe, at least the radius must be specified using the :radius option, was: #{options}" if !options[:radius]
+      
       @radius = options[:radius]
-      @minor_axis_radius = options[:minor_axis_radius]
-      @major_axis_radius = options[:major_axis_radius]
+      @minor_axis_radius = options[:minor_axis_radius] || options[:radius]
+      @major_axis_radius = options[:major_axis_radius] || options[:radius]
     end
 
     def miles_per_latitude_degree 

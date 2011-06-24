@@ -89,13 +89,19 @@ The call to _geo_distance_ returns an instance of GeoDistance
 
 The #kms, #meters, #miles and #feet methods return the length in the given unit.
 
-h3. Setting default algorithm
+h3. Setting default globe
 
-You can also set a default algorithm to use...
+GeoDistance.default_globe = MyFantasyWorld.new :radius => 2000.km
+dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
+
+
+h3. Setting default formula
+
+You can also set a default formula to use...
 The following will use the _Haversine_ algorithm:
 
 <pre>
-  GeoDistance.default_algorithm = :haversine
+  GeoDistance.default_formula = :haversine
   dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
   dist2 = GeoDistance.distance( [lat1, lon1], [lat2, lon2] )  
 </pre>
