@@ -8,6 +8,9 @@ rdoc
 doc
 .yardoc
 
+# Gemfile
+*.lock
+
 # bundler
 .bundle
 
