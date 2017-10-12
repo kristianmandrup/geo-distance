@@ -15,6 +15,21 @@ The formulas curently supported are
 
 The algorithm is specified using a symbol of either: [:flat, :haversine, :spherical, :vincenty, :nvector]
 
+h2. Status
+
+*Broken*
+
+Has been under some heavy-duty refctoring since around 2015 when it started to break due to changes in Ruby, external libraries etc.
+
+Currently being worked on in the `new refactor` branch. Please work from there if you intend to use this gem.
+
+Any help greatly appreciated!
+
+Note that this WIP version currently depends directly on [geo_point](https://github.com/kristianmandrup/geo_point) and [geo_units](https://github.com/kristianmandrup/geo_units) repos on github.
+The dependent gems might need a few more changes as well...
+
+Ideally the distance formula classes should be extracted (into separate gem) and made independent of the rest of the gems.
+
 h2. Install
 
 in Gemfile:
