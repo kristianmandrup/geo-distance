@@ -11,7 +11,8 @@ describe GeoDistance::Formula::Flat do
 
   describe '#distance' do
     it "should calculate flat distance as Float" do
-      dist = GeoDistance::Formula::Flat.distance(from, to, :units => :kms)
+      flat = GeoDistance::Formula::Flat.new
+      dist = flat.distance(from, to, :units => :kms)
       dist.should be_a(Float)
 
       puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
@@ -21,7 +22,8 @@ describe GeoDistance::Formula::Flat do
 
   describe '#geo_distance' do
     it "should calculate haversine distance as GeoDistance" do
-      dist = GeoDistance::Formula::Flat.geo_distance(from, to)
+      flat = GeoDistance::Formula::Flat.new
+      dist = flat.geo_distance(from, to)
       dist.should be_a(GeoDistance)
 
       # puts "the distance from #{from} to #{to} is: #{dist.meters} meters"

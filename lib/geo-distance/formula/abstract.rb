@@ -9,7 +9,7 @@ class GeoDistance
       attr_reader :globe
 
       def initialize globe = nil
-        @globe = globe || GeoDistance::Earth.new
+        @globe = globe || ::GeoDistance::Earth.new(:radius => 6378135.meters)
       end
 
       PI = Math::PI

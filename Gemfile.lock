@@ -1,3 +1,20 @@
+GIT
+  remote: git://github.com/kristianmandrup/geo_point.git
+  revision: 057d50c266d86cb28d79f23b9c7ab14077af25bd
+  specs:
+    geo_point (0.2.6)
+      geo_calc (>= 0.7.7.1)
+
+GIT
+  remote: git://github.com/kristianmandrup/geo_units.git
+  revision: 755d03a445f9bea166d665db275dba186653612b
+  specs:
+    geo_units (0.3.4)
+      activesupport (>= 4)
+      i18n (>= 0.8)
+      sugar-high (~> 0.7.2)
+      sweetloader (~> 0.1.6)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -15,13 +32,6 @@ GEM
       require_all (>= 1.2.0)
       sugar-high (~> 0.7.2)
       sweetloader
-    geo_point (0.2.6)
-      geo_calc (>= 0.7.7.1)
-    geo_units (0.3.4)
-      activesupport (>= 4)
-      i18n (>= 0.8)
-      sugar-high (~> 0.7.2)
-      sweetloader (~> 0.1.6)
     git (1.2.5)
     i18n (0.8.6)
     jeweler (1.6.2)
@@ -53,8 +63,8 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   bundler (>= 1.11)
-  geo_point (~> 0.2.6)
-  geo_units (>= 0.3.4)
+  geo_point!
+  geo_units!
   i18n
   jeweler (>= 1.6.2)
   rspec (~> 2.6.0)

@@ -2,8 +2,8 @@ source "http://rubygems.org"
 
 gem 'i18n'
 gem 'activesupport'
-gem 'geo_point', '~> 0.2.6'
-gem 'geo_units', '>= 0.3.4'
+gem 'geo_point', :github => 'kristianmandrup/geo_point'
+gem 'geo_units', :github => 'kristianmandrup/geo_units'
 
 group :development do
   gem "rspec",    "~> 2.6.0"

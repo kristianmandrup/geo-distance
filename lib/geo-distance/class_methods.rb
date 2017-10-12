@@ -1,3 +1,5 @@
+require 'geo-distance/globe/earth'
+
 class GeoDistance
   def self.formulas
     [:flat, :haversine, :spherical, :vincenty, :nvector]
@@ -39,7 +41,7 @@ class GeoDistance
     end
 
     def default_globe
-      @default_globe ||= GeoDistance::Globe::Earth.new
+      @default_globe ||= ::GeoDistance::Earth.new
     end
 
     def default_formula= name
@@ -51,6 +53,9 @@ class GeoDistance
       @default_formula || :haversine
     end
 
+    alias_method :default_algorithm, :default_formula
+    alias_method :default_algorithm=, :default_formula=
+
     def all_units
       GeoUnits.all_units
     end
@@ -58,15 +63,17 @@ class GeoDistance
     protected
 
     def distance_calculator *args
+      clazz = distance_class(*args)
       options = args.last_option || {}
-      distance_class(*args).new(options[:globe])
+      clazz.new(options[:globe])
     end
 
     def distance_class *args
       formula = args.last_option[:formula] || default_formula
-      "GeoDistance::#{formula.to_s.camelize}".constantize
+      clazz = "GeoDistance::Formula::#{formula.to_s.camelize}"
+      clazz.constantize
     rescue
-      raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}"
+      raise ArgumentError, "No such class: #{clazz}. Not a valid formula. Must be one of: #{formulas}, was #{formula}"
     end
   end
 
