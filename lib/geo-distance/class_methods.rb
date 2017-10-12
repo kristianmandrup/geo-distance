@@ -1,4 +1,4 @@
-class GeoDistance 
+class GeoDistance
   def self.formulas
     [:flat, :haversine, :spherical, :vincenty, :nvector]
   end
@@ -15,12 +15,12 @@ class GeoDistance
     }
   end
 
-  module ClassMethods        
+  module ClassMethods
     def distance *args
       distance_calculator(*args).distance *args
     end
 
-    def geo_distance *args      
+    def geo_distance *args
       distance_calculator(*args).geo_distance *args
     end
 
@@ -44,27 +44,31 @@ class GeoDistance
 
     def default_formula= name
       raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}" if !formulas.include?(name.to_sym)
-      @default_formula = name 
+      @default_formula = name
     end
-    
-    def default_formula 
+
+    def default_formula
       @default_formula || :haversine
-    end  
-    
+    end
+
+    def all_units
+      GeoUnits.all_units
+    end
+
     protected
 
     def distance_calculator *args
       options = args.last_option || {}
-      distance_class(*args).new(options[:globe])      
+      distance_class(*args).new(options[:globe])
     end
-    
-    def distance_class *args    
+
+    def distance_class *args
       formula = args.last_option[:formula] || default_formula
       "GeoDistance::#{formula.to_s.camelize}".constantize
     rescue
       raise ArgumentError, "Not a valid formula. Must be one of: #{formulas}"
-    end    
+    end
   end
-  
-  extend ClassMethods  
+
+  extend ClassMethods
 end

@@ -1,17 +1,17 @@
 h1. GeoDistance - geo distance calculations
 
-Calculates the Geographical shortest distance between two locations using longitude and latitude. 
+Calculates the Geographical shortest distance between two locations using longitude and latitude.
 This is done using "pure" Math formulas without resorting to Database provided functionality
 
 This gem is meant to be a replacement for those geo distance utils out there that use built in SQL DB functionality for their calculations!
 
 The formulas curently supported are
 
-* _Haversine_ 
-* _Spherical_ 
-* _Vincenty_ 
-* _NVector_ 
-* _Flat_ 
+* _Haversine_
+* _Spherical_
+* _Vincenty_
+* _NVector_
+* _Flat_
 
 The algorithm is specified using a symbol of either: [:flat, :haversine, :spherical, :vincenty, :nvector]
 
@@ -19,7 +19,7 @@ h2. Install
 
 in Gemfile:
 
-@gem 'geo-distance'@ 
+@gem 'geo-distance'@
 
 Run bundler:
 
@@ -30,11 +30,11 @@ h2. Usage example (Rspec 2)
 <pre>require 'geo-distance'
 
 describe GeoDistance do
-  let(:from) do 
+  let(:from) do
     [45, 10].geo_point
   end
 
-  let(:to) do   
+  let(:to) do
     b = [42, 11].geo_point
   end
 
@@ -42,7 +42,7 @@ describe GeoDistance do
     it "should calculate haversine distance as Float" do
 
       # specify units using :units option, fx :units => :miles
-      dist = GeoDistance.haversine(from, to, :globe => my_globe) 
+      dist = GeoDistance.haversine(from, to, :globe => my_globe)
       dist.should be_a(Float)
 
       puts "the distance from #{from} to #{to} is: #{dist.kms_to(:meters)} meters"
@@ -61,15 +61,15 @@ describe GeoDistance do
       dist.kms.should be_within(4).of 340
     end
   end
-  
+
   it "should set default_algorithm to :haversine" do
     GeoDistance.default_algorithm = :haversine
 
     dist = GeoDistance.distance(from, to, :units => :miles)
     geo_dist = GeoDistance.geo_distance(from, to, :units => :meters)
-  end  
+  end
 end
-</pre>   
+</pre>
 
 h2. Configuration and other notes
 
@@ -85,14 +85,14 @@ h2. Distance API
 
 The call to _geo_distance_ returns an instance of GeoDistance
 
-@dist = GeoDistance::Haversine.geo_distance( lat1, lon1, lat2, lon2 )@
+@dist = GeoDistance::Formula::Haversine.geo_distance( lat1, lon1, lat2, lon2 )@
 
 The #kms, #meters, #miles and #feet methods return the length in the given unit.
 
 h3. Setting default globe
 
 GeoDistance.default_globe = MyFantasyWorld.new :radius => 2000.km
-dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
+dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )
 
 
 h3. Setting default formula
@@ -102,17 +102,17 @@ The following will use the _Haversine_ algorithm:
 
 <pre>
   GeoDistance.default_formula = :haversine
-  dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )  
-  dist2 = GeoDistance.distance( [lat1, lon1], [lat2, lon2] )  
+  dist = GeoDistance.distance( lat1, lon1, lat2, lon2 )
+  dist2 = GeoDistance.distance( [lat1, lon1], [lat2, lon2] )
 </pre>
 
-Note that _GeoDistance_ uses "geo_point":https://github.com/kristianmandrup/geo_point for parsing arguments into two GeoPoints (point A to point B). 
+Note that _GeoDistance_ uses "geo_point":https://github.com/kristianmandrup/geo_point for parsing arguments into two GeoPoints (point A to point B).
 It can handle: Numeric, Array, Hash, String (even in DMS format). See geo_point for more...
 
-GeoDistance can be used in "mongoid_geo":https://github.com/kristianmandrup/mongoid-geo gem, as a distance calculator (in case the internal Mongo DB calculation is not used). 
+GeoDistance can be used in "mongoid_geo":https://github.com/kristianmandrup/mongoid-geo gem, as a distance calculator (in case the internal Mongo DB calculation is not used).
 
 h2. Contributing to geo-distance
- 
+
 * Check out the specs and add specs to spec any added features or changes!
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Fork the project

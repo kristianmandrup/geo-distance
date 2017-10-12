@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe GeoDistance::Haversine do
-  let(:from) do 
+describe GeoDistance::Formula::Haversine do
+  let(:from) do
     [45, 10].geo_point
   end
 
-  let(:to) do   
+  let(:to) do
     b = [42, 11].geo_point
   end
 
   describe '#distance' do
     it "should calculate haversine distance as Float" do
-      dist = GeoDistance::Haversine.distance(from, to)
+      dist = GeoDistance::Formula::Haversine.distance(from, to)
 
       dist.should be_a(Float)
 
@@ -22,7 +22,7 @@ describe GeoDistance::Haversine do
 
   describe '#geo_distance' do
     it "should calculate haversine distance as GeoDistance" do
-      dist = GeoDistance::Haversine.geo_distance(from, to)
+      dist = GeoDistance::Formula::Haversine.geo_distance(from, to)
       dist.should be_a(GeoDistance)
 
       puts "the distance from #{from} to #{to} is: #{dist.meters} meters"

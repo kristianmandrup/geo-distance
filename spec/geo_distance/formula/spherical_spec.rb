@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe GeoDistance::Spherical do
-    let(:from) do 
+describe GeoDistance::Formula::Spherical do
+    let(:from) do
       [45, 10].geo_point
     end
 
-    let(:to) do   
+    let(:to) do
       b = [42, 11].geo_point
     end
 
     describe '#distance' do
       it "should calculate spherical distance as Float" do
-        dist = GeoDistance::Spherical.distance(from, to)
+        dist = GeoDistance::Formula::Spherical.distance(from, to)
 
         dist.should be_a(Float)
 
@@ -22,7 +22,7 @@ describe GeoDistance::Spherical do
 
     describe '#geo_distance' do
       it "should calculate spherical distance as GeoDistance" do
-        dist = GeoDistance::Spherical.geo_distance(from, to)
+        dist = GeoDistance::Formula::Spherical.geo_distance(from, to)
         dist.should be_a(GeoDistance)
 
         puts "the distance from #{from} to #{to} is: #{dist.meters} meters"

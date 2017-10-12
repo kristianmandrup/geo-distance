@@ -1,13 +1,13 @@
 require 'geo_point'
 
 class GeoDistance
-  autoload_modules :ClassMethods, :Scale, :Conversion, :Formula, :Scale, :Globe, :from => 'geo_distance'
-  
+  autoload_modules :ClassMethods, :Scale, :Conversion, :Formula, :Scale, :Globe, :from => 'geo-distance'
+
   include GeoUnits
-  
+
   include Comparable
   include Conversion
-   
+
   attr_accessor :distance, :units
   attr_reader   :globe
 
@@ -25,8 +25,8 @@ class GeoDistance
 
   def number
     distance.round_to(precision[unit])
-  end    
-end  
+  end
+end
 
 require 'geo-distance/core_ext'
 

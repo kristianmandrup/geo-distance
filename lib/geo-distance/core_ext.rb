@@ -1,4 +1,5 @@
 require 'sugar-high/numeric'
+require 'geo-distance/class_methods'
 
 module GeoDistanceExt
   ::GeoDistance.all_units.each do |unit|

@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/kristianmandrup/geo-distance"
   gem.license = "MIT"
   gem.summary = %Q{Calculates the geo distance between two locations using longitude and latitude, using Haversine, Speherical or Vincenty formula}
-  gem.description = %Q{Calculates the geo distance between two locations using longitude and latitude using Haversine, Speherical or Vincenty formula. 
+  gem.description = %Q{Calculates the geo distance between two locations using longitude and latitude using Haversine, Speherical or Vincenty formula.
 This is done using Math formulas without resorting to Active Record or SQL DB functionality}
   gem.email = "kmandrup@gmail.com"
   gem.authors = ["Kristian Mandrup"]
@@ -31,11 +31,6 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
-end
-
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
 end
 
 task :default => :spec

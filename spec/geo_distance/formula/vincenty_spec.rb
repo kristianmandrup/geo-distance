@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe GeoDistance::Vincenty do
-  let(:from) do 
+describe GeoDistance::Formula::Vincenty do
+  let(:from) do
     [45, 10].geo_point
   end
 
-  let(:to) do   
+  let(:to) do
     b = [42, 11].geo_point
   end
 
   describe '#distance' do
     it "should calculate vincenty distance as Float" do
-      dist = GeoDistance::Vincenty.distance(from, to)
+      dist = GeoDistance::Formula::Vincenty.distance(from, to)
 
       dist.should be_a(Float)
 
@@ -22,7 +22,7 @@ describe GeoDistance::Vincenty do
 
   describe '#geo_distance' do
     it "should calculate vincenty distance as GeoDistance" do
-      dist = GeoDistance::Vincenty.geo_distance(from, to)
+      dist = GeoDistance::Formula::Vincenty.geo_distance(from, to)
       dist.should be_a(GeoDistance)
 
       puts "the distance from #{from} to #{to} is: #{dist.meters} meters"
