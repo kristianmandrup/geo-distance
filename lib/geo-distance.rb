@@ -26,6 +26,12 @@ class GeoDistance
   def number
     distance.round_to(precision[unit])
   end
+
+  protected
+
+  def unit_key units
+    GeoUnits.key units
+  end
 end
 
 require 'geo-distance/core_ext'
