@@ -1,4 +1,8 @@
-h1. GeoDistance - geo distance calculations
+h1. Broken - May 2021
+
+Over time, this code has experienced rot and is in need of repair. Please submit a Pull Request to help!
+
+h2. GeoDistance - geo distance calculations
 
 Calculates the Geo distance between two locations using longitude and latitude. 
 This is done using "pure" Math formulas without resorting to Active Record or SQL DB functionality
